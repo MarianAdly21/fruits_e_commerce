@@ -21,34 +21,31 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+
     /// to start time to switch to another screen
     _startTime();
   }
 
   Future<Timer> _startTime() async {
     final duration = const Duration(milliseconds: 2000);
-    bool isOnBordingViewSeen =  Prefs.getBool(kIsOnBordingViewSeen);
-    return Timer(
-      duration,
-      (){
-        if(isOnBordingViewSeen){
-          Navigator.pushReplacementNamed(context, LoginView.routeName);
-        }else{
-          Navigator.pushReplacementNamed(context, OnBordingView.routeName);
-        }
-      },
-    );
+    bool isOnBordingViewSeen = Prefs.getBool(kIsOnBordingViewSeen);
+    return Timer(duration, () {
+      if (isOnBordingViewSeen) {
+        Navigator.pushReplacementNamed(context, LoginView.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, OnBordingView.routeName);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.scaffoldBg,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Align(
-            alignment:AlignmentGeometry.topLeft,
+            alignment: AlignmentGeometry.topLeft,
             child: SvgPicture.asset(AppAssets.plant),
           ),
           SvgPicture.asset(AppAssets.appLogo),
