@@ -41,7 +41,6 @@ class _OnBordingViewState extends State<OnBordingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.scaffoldBg,
       body: SafeArea(
         child: Column(
           children: [
@@ -70,7 +69,7 @@ class _OnBordingViewState extends State<OnBordingView> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 29.h),
                 child: AppTextButton(
                   onPressed: () {
-                   Prefs.setBool(kIsOnBordingViewSeen, true);
+                    Prefs.setBool(kIsOnBordingViewSeen, true);
                     Navigator.of(context)
                         .pushReplacementNamed(LoginView.routeName);
                   },
