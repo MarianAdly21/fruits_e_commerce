@@ -10,7 +10,6 @@ class AppTextFormField extends StatefulWidget {
     this.obscureText = false,
     this.controller,
     this.validator,
-   
   });
   final String hintText;
   final bool obscureText;
@@ -37,6 +36,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       child: TextFormField(
         cursorColor: AppColor.blackFont,
         obscureText: isObscure,
+        obscuringCharacter: '●',
         controller: widget.controller,
         validator: widget.validator,
         keyboardType: widget.textInputType,
