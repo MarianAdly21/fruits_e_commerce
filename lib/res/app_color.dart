@@ -19,6 +19,7 @@ class AppColor {
   static const lightPrimaryColor = _eucalyptus;
   static const secondaryColor = _butterCup;
   static const whiteColor = _white;
+  static const transparentColor = Colors.transparent;
 
   /// onbording
 

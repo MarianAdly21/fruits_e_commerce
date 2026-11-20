@@ -15,4 +15,5 @@ class AppAssets {
   static const appleIcon = "$_baseIcon/apple_icon.svg";
   static const backIcon = "$_baseIcon/back_icon.svg";
   static const googleIcon = "$_baseIcon/google_icon.svg";
+  static const checkIcon = "$_baseIcon/Check.svg";
 }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:fruits_e_commerce/core/widgets/app_text_button.dart';
 import 'package:fruits_e_commerce/core/widgets/app_text_form_field.dart';
+import 'package:fruits_e_commerce/features/auth/presentation/views/signup_view.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/custom_app_bar.dart';
-import 'package:fruits_e_commerce/features/auth/presentation/widgets/dont_have_account_custom_widget.dart';
+import 'package:fruits_e_commerce/features/auth/presentation/widgets/rich_text_custom_widget.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/social_login_button.dart';
 import 'package:fruits_e_commerce/res/app_assets.dart';
 import 'package:fruits_e_commerce/res/app_color.dart';
@@ -16,11 +17,11 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "تسجيل الدخول", onTap: () {}),
-      body: _buildBody(),
+      body: _buildBody(context),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
       child: SingleChildScrollView(
@@ -47,7 +48,13 @@ class LoginView extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 33.h),
             ),
 
-            const DontHaveAccontCustomWidget(),
+            RichTextCustomWidget(
+              onTap: () {
+                Navigator.pushNamed(context, SignupView.routeName);
+              },
+              text1: "لا تمتلك حساب؟ ",
+              text2: "قم بانشاء حساب",
+            ),
             _orDividerWidget(),
             _socialAuthWidgte(),
           ],
