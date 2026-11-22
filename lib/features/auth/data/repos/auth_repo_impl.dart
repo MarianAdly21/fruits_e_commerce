@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruits_e_commerce/core/errors/exceptions.dart';
@@ -47,6 +49,20 @@ class AuthRepoImpl implements AuthRepo {
     } on CustomException catch (e) {
       return left(ServerFailure(message: e.toString()));
     } catch (e) {
+      return left(ServerFailure(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> signinWithGoogle() async {
+    try {
+      User user = await firebaseAuthServices.signInWithGoogle();
+
+      return right(UserModel.fromFirebaseUser(user));
+    } on CustomException catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    } catch (e) {
+      log("from signinWithGoogle ===> ${e.toString()} ");
       return left(ServerFailure(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.'));
     }
   }

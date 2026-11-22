@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruits_e_commerce/core/errors/exceptions.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthServices {
   Future<User> signinWithEmailAndPassword({
@@ -66,5 +67,20 @@ class FirebaseAuthServices {
     } catch (e) {
       throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
     }
+  }
+
+  Future<User> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn.instance
+        .authenticate();
+
+    final GoogleSignInAuthentication? googleAuth = googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return (await FirebaseAuth.instance.signInWithCredential(credential)).user!;
   }
 }

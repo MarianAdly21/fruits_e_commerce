@@ -15,7 +15,6 @@ import 'package:fruits_e_commerce/features/auth/presentation/widgets/rich_text_c
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/social_login_button.dart';
 import 'package:fruits_e_commerce/res/app_assets.dart';
 import 'package:fruits_e_commerce/res/app_color.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginView extends StatelessWidget {
   const new({super.key});
@@ -125,7 +124,9 @@ class _LoginViewWithBlocState extends State<LoginViewWithBloc> {
       child: Column(
         children: [
           SocialLoginButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<LoginCubit>().signinWithGoogle();
+            },
             icon: AppAssets.googleIcon,
             text: "تسجيل بواسطة جوجل",
           ),
