@@ -10,9 +10,9 @@ import 'package:fruits_e_commerce/features/auth/domain/repos/auth_repo.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/custom_app_bar.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/custom_check_box_widget.dart';
+import 'package:fruits_e_commerce/features/auth/presentation/widgets/custom_progress_hud.dart';
 import 'package:fruits_e_commerce/features/auth/presentation/widgets/rich_text_custom_widget.dart';
 import 'package:fruits_e_commerce/res/app_color.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignupView extends StatelessWidget {
   const new({super.key});
@@ -57,9 +57,8 @@ class _SignupViewWithBlocState extends State<SignupViewWithBloc> {
           }
         },
         builder: (context, state) {
-          return ModalProgressHUD(
-            inAsyncCall: state is SignupLoadingState ? true : false,
-            color: AppColor.primaryColor,
+          return CustomProgressHud(
+            isLoading: state is SignupLoadingState ? true : false,
             child: _buildBody(context),
           );
         },
