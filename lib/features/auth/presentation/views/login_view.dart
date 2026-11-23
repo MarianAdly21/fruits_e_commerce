@@ -136,7 +136,9 @@ class _LoginViewWithBlocState extends State<LoginViewWithBloc> {
             text: "تسجيل بواسطة أبل",
           ),
           SocialLoginButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<LoginCubit>().signinWithFacebook();
+            },
             icon: AppAssets.facebookIcon,
             text: "تسجيل بواسطة فيسبوك",
           ),

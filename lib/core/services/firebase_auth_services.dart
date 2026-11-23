@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fruits_e_commerce/core/errors/exceptions.dart';
-import 'package:fruits_e_commerce/core/errors/failure.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthServices {
@@ -85,7 +85,9 @@ class FirebaseAuthServices {
           .user!;
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) {
-        throw CancelledByUserException(message: 'GoogleSignInExceptionCode.canceled');
+        throw CancelledByUserException(
+          message: 'GoogleSignInExceptionCode.canceled',
+        );
       }
       log("from GoogleSignInException ===> ${e.toString()} ");
 
@@ -100,6 +102,24 @@ class FirebaseAuthServices {
       throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
     } catch (e) {
       log("from GoogleSignInException ===> ${e.toString()} ");
+      throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
+    }
+  }
+
+  Future<User> signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+
+      return (await FirebaseAuth.instance.signInWithCredential(
+        facebookAuthCredential,
+      )).user!;
+    } on CustomException catch (e) {
+      log("from signInWithFacebook CustomException===> ${e.toString()} ");
+      throw CustomException(message: e.toString());
+    } on Exception catch (e) {
+      log("from signInWithFacebook Exception===> ${e.toString()} ");
       throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
     }
   }
