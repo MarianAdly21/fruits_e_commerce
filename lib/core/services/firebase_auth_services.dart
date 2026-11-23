@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruits_e_commerce/core/errors/exceptions.dart';
+import 'package:fruits_e_commerce/core/errors/failure.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthServices {
@@ -65,22 +66,41 @@ class FirebaseAuthServices {
         throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
       }
     } catch (e) {
+      log("from createUserWithEmailAndPassword ===> ${e.toString()} ");
       throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
     }
   }
 
   Future<User> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn.instance
-        .authenticate();
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn.instance
+          .authenticate();
 
-    final GoogleSignInAuthentication? googleAuth = googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth = googleUser?.authentication;
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth?.idToken,
-    );
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth?.idToken,
+      );
+      return (await FirebaseAuth.instance.signInWithCredential(credential))
+          .user!;
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        throw CancelledByUserException(message: 'GoogleSignInExceptionCode.canceled');
+      }
+      log("from GoogleSignInException ===> ${e.toString()} ");
 
-    // Once signed in, return the UserCredential
-    return (await FirebaseAuth.instance.signInWithCredential(credential)).user!;
+      throw CustomException(message: 'تعذّر تسجيل الدخول بحساب جوجل.');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'network-request-failed') {
+        throw CustomException(message: 'تأكد من اتصالك بالإنترنت.');
+      }
+      log(
+        "from GoogleSignInException (FirebaseAuthException) ===> ${e.toString()} ",
+      );
+      throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
+    } catch (e) {
+      log("from GoogleSignInException ===> ${e.toString()} ");
+      throw CustomException(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.');
+    }
   }
 }

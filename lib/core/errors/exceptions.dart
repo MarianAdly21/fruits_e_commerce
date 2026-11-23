@@ -7,3 +7,7 @@ class CustomException implements Exception {
     return message;
   }
 }
+
+class CancelledByUserException extends CustomException {
+  new({required super.message});
+}

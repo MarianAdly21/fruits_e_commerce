@@ -60,9 +60,16 @@ class AuthRepoImpl implements AuthRepo {
 
       return right(UserModel.fromFirebaseUser(user));
     } on CustomException catch (e) {
-      return left(ServerFailure(message: e.toString()));
+      if (e is CancelledByUserException) {
+        log(
+          "from signinWithGoogleRepoImpl(CancelledByUserException) ===> ${e.toString()} ",
+        );
+        return left(CancelledFailure(message: ''));
+      } else {
+        return left(ServerFailure(message: e.toString()));
+      }
     } catch (e) {
-      log("from signinWithGoogle ===> ${e.toString()} ");
+      log("from signinWithGoogleRepoImpl ===> ${e.toString()} ");
       return left(ServerFailure(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.'));
     }
   }
