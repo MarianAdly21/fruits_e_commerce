@@ -10,6 +10,7 @@ import 'package:fruits_e_commerce/core/services/shared_preferences_singleton.dar
 import 'package:fruits_e_commerce/features/splash/presentation/views/splash_view.dart';
 import 'package:fruits_e_commerce/firebase_options.dart';
 import 'package:fruits_e_commerce/res/app_color.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'generated/l10n.dart';
 
@@ -19,6 +20,9 @@ void main() async {
   await Prefs.init();
   setup();
   Bloc.observer = CustomBlocObserver();
+   await GoogleSignIn.instance.initialize(
+    serverClientId: "30687210253-sgbr8v64rvoodlbaa88gil8ii2e52gda.apps.googleusercontent.com"
+  );
   runApp(const FruitHub());
 }
 
