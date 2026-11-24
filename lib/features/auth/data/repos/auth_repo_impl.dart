@@ -55,11 +55,14 @@ class AuthRepoImpl implements AuthRepo {
         email: email,
         password: password,
       );
+      var userEntity = await getUserData(uId: user.uid);
 
-      return right(UserModel.fromFirebaseUser(user));
+      return right(userEntity);
     } on CustomException catch (e) {
+      log("from signinWithEmailAndPassword ===> ${e.toString()} ");
       return left(ServerFailure(message: e.toString()));
     } catch (e) {
+      log("from signinWithEmailAndPassword ===> ${e.toString()} ");
       return left(ServerFailure(message: 'حدث خطأ، حاول مرة أخرى لاحقًا.'));
     }
   }
@@ -98,7 +101,7 @@ class AuthRepoImpl implements AuthRepo {
     try {
       user = await firebaseAuthServices.signInWithFacebook();
       var userEntity = UserModel.fromFirebaseUser(user);
-      await addUserData(user: userEntity); 
+      await addUserData(user: userEntity);
       return right(UserModel.fromFirebaseUser(user));
     } on CustomException catch (e) {
       await deleteUser(user);
@@ -115,7 +118,17 @@ class AuthRepoImpl implements AuthRepo {
     await databaseServices.addDate(
       path: BackendEndpoints.addUserData,
       data: user.toMap(),
+      documentId: user.userId,
     );
+  }
+
+  @override
+  Future<UserEntity> getUserData({required String uId}) async {
+    Map<String, dynamic> data = await databaseServices.getDate(
+      path: BackendEndpoints.getUserData,
+      documentId: uId,
+    );
+    return UserModel.fromJson(data);
   }
 
   Future<void> deleteUser(User? user) async {
