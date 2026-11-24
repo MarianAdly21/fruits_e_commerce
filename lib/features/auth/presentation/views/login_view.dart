@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -130,11 +132,13 @@ class _LoginViewWithBlocState extends State<LoginViewWithBloc> {
             icon: AppAssets.googleIcon,
             text: "تسجيل بواسطة جوجل",
           ),
-          SocialLoginButton(
-            onPressed: () {},
-            icon: AppAssets.appleIcon,
-            text: "تسجيل بواسطة أبل",
-          ),
+          Platform.isIOS
+              ? SocialLoginButton(
+                  onPressed: () {},
+                  icon: AppAssets.appleIcon,
+                  text: "تسجيل بواسطة أبل",
+                )
+              : SizedBox.shrink(),
           SocialLoginButton(
             onPressed: () {
               context.read<LoginCubit>().signinWithFacebook();
